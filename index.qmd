@@ -3,6 +3,7 @@ title: "Andre Dextre"
 subtitle: "Water Reasource Management | Environmental Justice | Data Science"
 about:
    template: trestles
+   image: me.png
    image-shape: rounded
    links:
         - icon: linkedin

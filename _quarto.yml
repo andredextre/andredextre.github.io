@@ -1,19 +1,20 @@
 project:
   type: website
-
+  output-dir: docs
+  
 website:
-  title: "andredextre.github.io"
+  title: "Home"
+  sidebar: true
+  search: true
   navbar:
-    left:
+    right:
       - href: index.qmd
         text: Home
-      - about.qmd
-
+ 
 format:
   html:
     theme: cosmo
-    css: styles.css
+    mainfont: Avenir
+    backgroundcolor: seashell
     toc: true
-
 editor: visual
-

@@ -10,7 +10,9 @@ website:
   navbar:
     right:
       - href: index.qmd
-        text: Home
+        text: Home 
+      - href: my_blogs.qmd 
+        text: My Blogs
  
 format:
   html:

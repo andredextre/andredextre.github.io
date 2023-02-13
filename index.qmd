@@ -20,4 +20,20 @@ about:
           href: mailto:adextre@ucsb.edu
 ---
 
-I graduated from UC Santa Barbara with a Bachelor's Degree in Environmental Studies with a concentration in Water Resource Management. While at UCSB, I was introduced to data collection, manipulation and visualization utilizing USGS data to communicate water management issues. Throughout this time, I interned at the Jasechko Lab, at UCSB, as a research assistant collecting and processing surface and groundwater samples at the Jack and Laura Dangermond Reserve. I conducted weekly to daily field hydrology work including collecting samples from deep groundwater wells and processing them for isotopic analysis. Having grown up in Lima, Peru in a community that experienced lack of access to clean water, it has become my goal to improve resource infrastructure to provide clean water to communities that have been marginalized and underserved. As a Master of Environmental Data Science (MEDS) student at the UCSB Bren School of Environmental Science and Management, I aim to enhance my data analytic skills to revolutionize water resource management by providing data-driven solutions.
+# Qué tal!
+
+My name is Andre, I am a Master's student studying Environmental Data Science at the [Bren School of Environmental Science & Management](https://bren.ucsb.edu/masters-programs/master-environmental-data-science) at UC Santa Barbara. My passion is focused on **water resource management and policy**, and my goal is to use data science as a tool to contribute to the solution of the world's water crisis.
+
+------------------------------------------------------------------------
+
+## Education
+
+**University of California, Santa Barbara**
+
+<div class="topbr">
+
+<p class="custom-subtitle">
+
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")`Masters in Environmental Data Science \| Expected Graduation: June 2023
+
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")`Bachelor's of Arts in Environmental Studies \| June 2021

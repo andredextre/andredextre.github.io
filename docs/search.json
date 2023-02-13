@@ -4,28 +4,28 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "1 + 1\n\n[1] 2"
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Andre Dextre",
     "section": "",
-    "text": "I graduated from UC Santa Barbara with a Bachelor’s Degree in Environmental Studies with a concentration in Water Resource Management. While at UCSB, I was introduced to data collection, manipulation and visualization utilizing USGS data to communicate water management issues. Throughout this time, I interned at the Jasechko Lab, at UCSB, as a research assistant collecting and processing surface and groundwater samples at the Jack and Laura Dangermond Reserve. I conducted weekly to daily field hydrology work including collecting samples from deep groundwater wells and processing them for isotopic analysis. Having grown up in Lima, Peru in a community that experienced lack of access to clean water, it has become my goal to improve resource infrastructure to provide clean water to communities that have been marginalized and underserved. As a Master of Environmental Data Science (MEDS) student at the UCSB Bren School of Environmental Science and Management, I aim to enhance my data analytic skills to revolutionize water resource management by providing data-driven solutions."
+    "text": "My name is Andre, I am a Master’s student studying Environmental Data Science at the Bren School of Environmental Science & Management at UC Santa Barbara. My passion is focused on water resource management and policy, and my goal is to use data science as a tool to contribute to the solution of the world’s water crisis.\n\n\n\nUniversity of California, Santa Barbara\n\n\nGraduation CapMasters in Environmental Data Science | Expected Graduation: June 2023\nGraduation CapBachelor’s of Arts in Environmental Studies | June 2021"
   },
   {
     "objectID": "my_blogs.html",
     "href": "my_blogs.html",
     "title": "My Blogs",
     "section": "",
-    "text": "MEDS\n\n\nR\n\n\n\nStatistical analysis on how snow and precipitation levels effect reservoir storage and groundwater levels and comparing them to groundwater withdrawals by demand sector in…\n\n\n\nAndre Dextre\n\n\nDec 9, 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMEDS\n\n\ntest\n\n\nR\n\n\n\nLearn how to make a blog post using RStudio\n\n\n\nAndre Dextre\n\n\nOct 24, 2022\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Where is California’s Groundwater Going?\n\n\n\nMEDS\n\n\nR\n\n\n\nStatistical analysis on how snow and precipitation levels effect reservoir storage and groundwater levels and comparing them to groundwater withdrawals by demand sector in…\n\n\n\nAndre Dextre\n\n\nDec 9, 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDre’s First Blog\n\n\n\nMEDS\n\n\ntest\n\n\nR\n\n\n\nLearn how to make a blog post using RStudio\n\n\n\nAndre Dextre\n\n\nOct 24, 2022\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2022-10-24-class-example/index.html",
     "href": "posts/2022-10-24-class-example/index.html",
     "title": "Dre’s First Blog",
     "section": "",
-    "text": "Here’s some more text\nSam Csik Blog: (Csik 2022)\n\n\nAirbnb failed to disrupt the hotel industry.\n\n— Unobtainium Daydreams ((ShimminyKricket?)) October 24, 2022\n\n\n\n\n\n\nReferences\n\nCsik, Samantha. 2022. “Adding a Blog to Your Existing Quarto Website.” October 24, 2022. https://samanthacsik.github.io/posts/2022-10-24-quarto-blogs/.\n\nCitationBibTeX citation:@online{dextre2022,\n  author = {Andre Dextre},\n  title = {Dre’s {First} {Blog}},\n  date = {2022-10-24},\n  url = {https://andredextre.github.io/posts/2022-10-24-class-example},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nAndre Dextre. 2022. “Dre’s First Blog.” October 24, 2022.\nhttps://andredextre.github.io/posts/2022-10-24-class-example."
+    "text": "Hi this is my class example\nHere’s some more text\nSam Csik Blog: (Csik 2022)\n\n\nAirbnb failed to disrupt the hotel industry.\n\n— Unobtainium Daydreams ((ShimminyKricket?)) October 24, 2022\n\n\n\n\n\n\nReferences\n\nCsik, Samantha. 2022. “Adding a Blog to Your Existing Quarto Website.” October 24, 2022. https://samanthacsik.github.io/posts/2022-10-24-quarto-blogs/.\n\nCitationBibTeX citation:@online{dextre2022,\n  author = {Andre Dextre},\n  title = {Dre’s {First} {Blog}},\n  date = {2022-10-24},\n  url = {https://andredextre.github.io/posts/2022-10-24-class-example},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nAndre Dextre. 2022. “Dre’s First Blog.” October 24, 2022.\nhttps://andredextre.github.io/posts/2022-10-24-class-example."
   },
   {
     "objectID": "posts/groundwater_data/index.html",

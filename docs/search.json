@@ -1,17 +1,10 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "about_me.html",
+    "href": "about_me.html",
+    "title": "Bio",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Andre Dextre",
-    "section": "",
-    "text": "My name is Andre, I am a Master’s student studying Environmental Data Science at the Bren School of Environmental Science & Management at UC Santa Barbara. My passion is focused on water resource management and policy, and my goal is to use data science as a tool to contribute to the solution of the world’s water crisis.\n\n\n\nUniversity of California, Santa Barbara\n\n\nGraduation CapMasters in Environmental Data Science | Expected Graduation: June 2023\nGraduation CapBachelor’s of Arts in Environmental Studies | June 2021"
+    "text": "My name is Andre, I am a Master’s student studying Environmental Data Science at the Bren School of Environmental Science & Management at UC Santa Barbara. My passion is focused on water resource management and policy, and my goal is to use data science as a tool to contribute to the solution of the world’s water crisis.\n\n\n\nUniversity of California, Santa Barbara\n\n\n\nGraduation CapMasters in Environmental Data Science | Expected Graduation: June 2023\nGraduation CapBachelor’s of Arts in Environmental Studies | June 2021"
   },
   {
     "objectID": "my_blogs.html",

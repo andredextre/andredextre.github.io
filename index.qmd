@@ -1,8 +1,8 @@
 ---
 title: "Andre Dextre" 
-subtitle: "Water Reasource Management | Environmental Justice | Data Science"
+subtitle: "Masters of Environmental Data Science       \n  Water Resource Management"
 about:
-   template: trestles
+   template: jolla
    image: me.png
    image-shape: rounded
    links:
@@ -20,20 +20,3 @@ about:
           href: mailto:adextre@ucsb.edu
 ---
 
-# Qué tal!
-
-My name is Andre, I am a Master's student studying Environmental Data Science at the [Bren School of Environmental Science & Management](https://bren.ucsb.edu/masters-programs/master-environmental-data-science) at UC Santa Barbara. My passion is focused on **water resource management and policy**, and my goal is to use data science as a tool to contribute to the solution of the world's water crisis.
-
-------------------------------------------------------------------------
-
-## Education
-
-**University of California, Santa Barbara**
-
-<div class="topbr">
-
-<p class="custom-subtitle">
-
-`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")`Masters in Environmental Data Science \| Expected Graduation: June 2023
-
-`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")`Bachelor's of Arts in Environmental Studies \| June 2021

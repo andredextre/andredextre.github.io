@@ -3,23 +3,25 @@ project:
   output-dir: docs
   
 website:
-  favicon: logo.png 
+  favicon: images/logo.png 
   title: "Andre Dextre"
   sidebar: true
   search: true
   navbar:
-    logo: logo.png
+    # background: dark
+    # foreground: primary
+    logo: images/logo.png
     right:
-      - href: about_me.qmd
-        text: 'About Me'
+      # - href: about_me.qmd
+      #   text: 'About Me'
       - href: my_blogs.qmd 
-        text: Portfolio
-      - href: Dextre_Andre_Resume.pdf
+        text: "My Work"
+      - href: Resume_Andre.pdf
         text: Resume
         
   page-footer: 
     background: grey
-    left: "Copyright © March 2023"
+    left: "Copyright © 2023"
     right: 
       - icon: linkedin
         href: https://www.linkedin.com/in/andre-dextre-b199251a3/      
@@ -37,5 +39,5 @@ format:
     page-layout: article
     # css: styles.css
     mainfont: Lato
-    toc: true
+    toc: false
 editor: visual

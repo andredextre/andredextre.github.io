@@ -1,10 +1,14 @@
 ---
-title: "Andre Dextre" 
-subtitle: "Masters of Environmental Data Science       \n  Water Resource Management"
+title: "Andre Dextre"
+subtitle: "Environmental Data Scientist   \n📍San Francisco Bay Area" 
+toc: false
+image: images/me3.jpg
+page-layout: full
 about:
-   template: jolla
-   image: me.png
-   image-shape: rounded
+   id: hero-heading
+   template: trestles
+   image-width: 20em
+   image-shape: round
    links:
         - icon: linkedin
           text: LinkedIn
@@ -14,9 +18,182 @@ about:
           href: https://github.com/andredextre
         - icon: twitter
           text: twitter
-          href: https://twitter.com/meagan__brown
+          href: https://twitter.com/Andredex_data
         - icon: envelope
-          text: Email Me!
+          text: Contact Me!
           href: mailto:adextre@ucsb.edu
+format: 
+  html: 
+    code-fold: true
+    code-summary: "View Code"
 ---
+
+![](images/SF_GG_v2.png)
+
+::: panel-tabset
+
+## **Background**
+
+<h4>**Biography**</h4>
+
+Hello! I'm Andre, an Environmental Data Scientist with a deep-rooted passion for advancing sustainable water management. Born and raised in Lima, Peru, I experienced firsthand the challenges of water scarcity due to inadequate infrastructure and prolonged droughts. In 2006, at the age of eight, my family and I immigrated to the United States, a journey that shaped my worldview and my career path.
+
+The challenges I experienced with water scarcity while growing up in Lima ignited a profound dedication to addressing global water issues. This led me to earning my Master’s degree in Environmental Data Science from the Bren School of Environmental Science and Management at UC Santa Barbara. Throughout my academic journey, I've gained skills in water analysis, hydrological modeling, and scientific communication, equipping me with the tools to make a difference in the world of water policy and management.
+
+I am driven by the belief that effective water management is pivotal for community well-being and environmental sustainability. My goal is to leverage my academic background in water resources management and data science to inform and improve water policy, ensuring that communities worldwide have access to reliable and clean water.<br>
+
+## **Education**
+<h4>**Education**</h4>
+
+<u>**Bren School of Environmental Science & Management, UCSB**</u><br>
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` Masters in Environmental Data Science \| Graduated: June 2023 <br>
+
+<u>**University of California - Santa Barbara (UCSB)**</u><br>
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` BA Environmental Studies \| Graduated: June 2021
+
+<u>**Santa Monica College**</u><br>
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` AS Economics & Accounting \| Graduated: June 2018
+
+## **Highlighted Projects**
+<h4>**Highlighted Projects**</h4>
+<h10><b><u>Master's Environmental Data Science Capstone Project \| 2023 </b></u></h10><br> Title: [Assessing Wildfire in Groundwater Dependent Ecosystems](https://bren.ucsb.edu/projects/assessing-how-groundwater-availability-coincides-wildfire-risk)<br> Role: Project & Data Manager <br>
+Reproducible Code: [Analysis](https://github.com/gw-wildfire/aquafire), [Dashboard](https://github.com/gw-wildfire/shiny_app) 
+![](images/capstone_final.mp4){width="700"}
+
+<U>Description</U>: We developed a [ShinyApp Dashboard](https://shiny.rstudio.com) in R to show wildfire statistics and trends within [groundwater dependent ecosystems (GDEs)](https://www.fs.usda.gov/managing-land/natural-resources/geology/groundwater/groundwater-dependent-ecosystems) in California. The final product is a single operating platform where you can click on any groundwater dependent ecosystem in California and view wildfire statistics for that particular ecosystem. 
+
+<h10><b><u>Water Data Research Project \| 2021 </b></u></h10><br>Title: US Irrigation Methods & Water Withdrawals (Mgal/d)<br> Role: Student Researcher <br>
+Reproducible Code: [Analysis](https://github.com/andredextre/Water_Portfolio/blob/main/Water_Data_Portfolio.Rmd), [Interactive Map](https://github.com/andredextre/Water_Portfolio/blob/main/Water_Withdrawal_Map.Rmd) 
+
+
+```{r, warning = FALSE, error = FALSE, echo = FALSE, message = FALSE, include = TRUE}
+#libraries
+library(readxl)
+library(here)
+library(janitor)
+library(tidyverse)
+library(USAboundaries)
+library(sf)
+library(leaflet)
+
+conus <- us_states() %>%
+  filter(!state_abbr %in% c("PR", "VI", "DC")) %>% 
+  select(state_name,state_abbr) %>% 
+  rename("state" = state_abbr) 
+
+irrigation <- read_xlsx(here("data/water_use/us2015.xlsx"), skip =1) %>% 
+  clean_names() %>% 
+  select(state, ir_wgw_fr, ir_wsw_fr) %>% 
+  mutate("Irrigation" = ir_wgw_fr + ir_wsw_fr) %>% 
+  select(state, Irrigation) %>% 
+  group_by(state) %>% 
+  summarise(across(1, sum)) %>% 
+  filter(!(state %in% c("PR", "VI", "DC"))) %>% 
+  inner_join(conus, by = "state") %>% 
+  st_as_sf()
+
+
+acres <- read_xlsx(here("data/water_use/us2015.xlsx"), skip =1) %>% 
+  clean_names() %>% 
+  select(state, ir_ir_spr, ir_ir_mic, ir_ir_sur, ir_ir_tot) %>% 
+  group_by(state) %>% 
+  summarise(across(1:4, sum)) %>% 
+  filter(!(state %in% c("PR", "VI", "DC"))) %>% 
+  inner_join(conus,by = "state") %>%
+  st_as_sf() %>% 
+  st_centroid()  
+
+# map data values to colors according to a palette
+# palette for irrigation withdrawals
+pal_w <- colorNumeric(palette = "Blues", reverse= FALSE, domain = irrigation$Irrigation)
+
+# palette for total acres irrigated
+pal_a <- colorNumeric(palette = "Greens", reverse= TRUE, domain = acres$ir_ir_tot)
+
+#3.3
+leaflet() %>%
+  
+  # Add terrain map option
+  addProviderTiles("Esri.WorldImagery", group = "Imagery") %>%
+  
+  # Add base map option
+  addProviderTiles(providers$OpenStreetMap, group = "Base") %>%
+  
+  # Set view of initial map so it is zoomed into continental usa
+  setView(-95,40,3.5) %>%
+  
+  # Add water use data for polygons, set color based on pal defined above
+  addPolygons(data = irrigation,
+              fillColor = ~pal_w(irrigation$Irrigation),
+              
+              # Adjust the opacity—something opaque enough to see the colors but also allow us to see the land use from
+              #the satellite map
+              
+              fillOpacity = 0.9,
+              # Adjust the line weight and color of polygon outlines
+              weight = 2,
+              color = "black",
+              # Indicate the group, which will be important for setting the interactive menu
+              group = "Irrigation Withdrawals") %>%
+  # Add acres data for circles, set color based on pal defined above, adjust opacity, weight of outline for circle and color of outline for circle
+  
+  addCircleMarkers(data = acres,
+                   fillColor = ~pal_a(acres$ir_ir_tot),
+                   fillOpacity = 0.5,
+                   weight = 2,
+                   color = "green",
+                   
+                   
+                   
+                   # Adjust the radius of the circle – replace x with a value that helps show the circles in a way that communicates the data best
+                   radius = (acres$ir_ir_tot/700),
+                   
+                   # Indicate the group, which will be important for setting the interactive menu
+                   group = "Total Acres Irrigated") %>%
+  
+  
+  addCircleMarkers(data = acres,
+                   fillColor = ~pal_a(acres$ir_ir_sur),
+                   fillOpacity = 0.5,
+                   weight = 2,
+                   color = "green4",
+                   radius = (acres$ir_ir_sur/700),
+                   group = "Acres Flood Irrigated") %>%
+  
+  addCircleMarkers(data = acres,
+                   fillColor = ~pal_a(acres$ir_ir_spr),
+                   fillOpacity = 0.5,
+                   weight = 2,
+                   color = "orange",
+                   radius = (acres$ir_ir_spr/700),
+                   group = "Acres Sprinkler Irrigated") %>%
+  
+  addCircleMarkers(data = acres,
+                   fillColor = ~pal_a(acres$ir_ir_mic),
+                   fillOpacity = 0.5,
+                   weight = 2,
+                   color = "red1",
+                   radius = (acres$ir_ir_mic/700),
+                   group = "Acres Micro Irrigated") %>%
+  
+  # Add a legend for withdrawals, indicate color palette, title and position
+  addLegend(pal = pal_w,
+            values = irrigation$Irrigation,
+            title = "Withdrawals (Mgal/d)",
+            position = "bottomright") %>%
+  
+  # Adjust controls for interactive menu; do not collapse the interactive menu
+  addLayersControl(options = layersControlOptions(collapsed = FALSE),
+                   
+                   # Add group names to interactive menu; these control the toggle buttons – watch for typos
+                   overlayGroups = c("Irrigation Withdrawals", "Total Acres Irrigated", "Acres Flood Irrigated", "Acres Sprinkler Irrigated", "Acres Micro Irrigated"),
+                   
+                   # Adjust the names of the base maps
+                   baseGroups = c("Imagery", "Base"))
+```
+
+<U>Data Source</U>: [United States Geological Survey](https://water.usgs.gov/watuse/data/index.html) (2015)
+
+
+:::
 

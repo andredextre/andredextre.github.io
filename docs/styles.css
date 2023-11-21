@@ -1,0 +1,43 @@
+/* css styles */
+---
+title: "Andre Dextre"
+subtitle: "Environmental Data Scientist"
+format:
+  html:
+    css: style.css
+---
+
+<div class="header">
+    <img src="me.png" alt="Andre Dextre">
+    <h1>Andre Dextre</h1>
+    <p>Environmental Data Scientist</p>
+</div>
+
+<div class="content">
+    <h2>Welcome</h2>
+    <p>Welcome to my professional portfolio...</p>
+
+    <h2>About My Work</h2>
+    <p>I specialize in:...</p>
+
+    ## Featured Projects
+
+    <div class="project">
+        <h3>Project Title 1</h3>
+        <p>Brief description of Project 1...</p>
+    </div>
+
+    <div class="project">
+        <h3>Project Title 2</h3>
+        <p>Brief description of Project 2...</p>
+    </div>
+
+    <!-- More projects here -->
+
+    <h2>Get in Touch</h2>
+    <p>For collaboration inquiries...</p>
+</div>
+
+<div class="footer">
+    <p>Connect with me on <a href="https://www.linkedin.com/in/andre-dextre-b199251a3/">LinkedIn</a></p>
+</div>

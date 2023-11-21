@@ -1,0 +1,703 @@
+---
+title: "Where is California's Groundwater Going?"
+description: "Statistical analysis on how snow and precipitation levels effect reservoir storage and groundwater levels and comparing them to groundwater withdrawals by demand sector in California (1999-2019)"
+author: 
+  - name: Andre Dextre
+    url: https://andredextre.github.io
+    orcid: 0000-0002-2223-5498
+    affiliation: UCSB MEDS
+    affiliation-url: https://ucsb-meds.github.io
+date: 2022-12-09
+categories: [MEDS, R]
+citation: 
+  url: https://github.com/andredextre/EDS_222_Final_Project.git
+image: logo.png
+draft: false
+format: 
+  html: 
+    code-fold: true
+    code-summary: "View Code"
+---
+
+## Why Should We Care?
+
+Due to climate change, the state of California is more susceptible to longer periods of drought, ultimately affecting the states overall water supply.[^1] Aside from surface water, California heavily depends on its reservoir storage and groundwater supply to provide water to its \~40 million residents. Due to prolong drought, average snow and rainfall is not highly reliable every year. Since 2000, California has experience two in 2007-2009 and with the longest drought period being from 2011-2017. In this statistical analysis, we will examine how precipitation (snow and rainfall) are affecting reservoir storage and groundwater levels from 1999-2019.
+
+[^1]: [Climate Change and Water](https://water.ca.gov/Programs/All-Programs/Climate-Change-Program/Climate-Change-and-Water#:~:text=Climate%20change%20is%20expected%20to,river%20delivering%20water%20to%20California.)
+
+```{r, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+#Load packages
+library(tidyverse)
+library(dplyr)
+library(janitor)
+library(here)
+library(kableExtra)
+library(readr)
+library(ggplot2)
+library(modelr)
+library(knitr)
+library(broom)
+library(openintro)
+library(stringr)
+library(lubridate)
+library(readxl)
+library(scales)
+library(ggthemes)
+library(gghighlight)
+library(ggnewscale)
+library(rempsyc)
+library(sjPlot)
+
+options(scipen = 999) # disable scientific notations
+### Setting directories ###
+rootdir <- getwd() #root directory
+datadir <- file.path(rootdir, "data") #data directory
+setwd(rootdir) #working directory
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Data
+
+### Snow/Rainfall Data
+
+For this statistical analysis, I've obtained "Water Year" data from UC Berkeley's Central Sierra Snow-lab[^2]. This data set contains snow and rainfall data for water years 1971-2019 in a CSV format.
+
+[^2]: [UC Berkeley's Central Sierra Snow-lab](https://cssl.berkeley.edu/)
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Read in water year data
+
+#Read in the Water Year  2000 Data
+wy_2000 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2000.csv" ), na = c("T", "NA", "--")) %>% 
+  clean_names() %>% 
+  replace(is.na(.), 0) %>%
+  select(!remarks)
+#Read in the Water Year  2001 Data
+wy_2001 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2001.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  transform(new_snow_cm = as.numeric(new_snow_cm)) %>%
+  replace(is.na(.), 0) %>%
+  select(!remarks)
+#Read in the Water Year  2002 Data
+wy_2002 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2002.csv"), na = c("T", "NA", "--"))%>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2003 Data
+wy_2003 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2003.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0)
+#Read in the Water Year  2004 Data
+wy_2004 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2004.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2005 Data
+wy_2005 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2005.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0)
+#Read in the Water Year  2006 Data
+wy_2006 <- read_csv(here(datadir,"water_year_data", "Whole_WY_2006.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2007 Data
+wy_2007 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2007.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2008 Data
+wy_2008 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2008.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0)
+#Read in the Water Year  2009 Data
+wy_2009 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2009.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2010 Data
+wy_2010 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2010.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2011 Data
+wy_2011 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2011.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2012 Data
+wy_2012 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2012.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2013 Data
+wy_2013 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2013.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2014 Data
+wy_2014 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2014.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2015 Data
+wy_2015 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2015.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2016 Data
+wy_2016 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2016.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0)
+#Read in the Water Year  2017 Data
+wy_2017 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2017.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0)
+#Read in the Water Year  2018 Data
+wy_2018 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2018.csv"), na = c("T", "NA", "--")) %>%
+  clean_names() %>%
+  select(!remarks) %>%
+  replace(is.na(.), 0) 
+#Read in the Water Year  2019 Data
+wy_2019 <- read_csv(here(datadir, "water_year_data", "Whole_WY_2019.csv"), na = c("T", "NA", "--")) %>%
+  clean_names()%>%
+  select(!remarks) %>%
+  replace(is.na(.), 0)
+```
+
+## Reservoir Data
+
+Additionally, for this analysis, I've obtained reservoir elevation and storage data from CA Department of Natural Resources & CA Department of Water Resources[^3]. This data set provides daily reservoir elevation and storage data from 1981-2022. One limitation to this data set is that it only provide data on reservoirs part of the State Water Project, therefore my focus will be based on the San Luis Reservoir near Los Banos, California.
+
+[^3]: [CA Department of Natural Resources & CA Department of Water Resources](https://data.cnra.ca.gov/dataset/state-water-project-monthly-report-of-operations)
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Read in reservoir data
+reservoir_data <- read_csv(here(datadir, "reservoir_data", "reservoir_data.csv"), na = c("NA")) %>%
+  mutate(date = lubridate::mdy(date)) %>%
+  mutate(year = floor_date(date, "year"),
+         year = lubridate::year(year)) %>%
+  select(year, field_division, reservoir, elevation, storage) %>%
+  replace(is.na(.), 0) %>% 
+  filter(reservoir == "San Luis")
+
+```
+
+## Groundwater Measurement Data
+
+Moreover, for this analysis, I've obtained groundwater measurement data from CA Department of Natural Resources & CA Department of Water Resources[^4]. This data set contains historical daily groundwater measurements for aquifers throughout all of California.
+
+[^4]: [CA Department of Natural Resources & CA Department of Water Resources](https://data.cnra.ca.gov/dataset/periodic-groundwater-level-measurements)
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Read in groundwater measurement and stations data
+gw_measurements <- read_csv(here(datadir, "gw_measurements", "measurements.csv")) 
+
+stations <- read_csv(here(datadir, "gw_measurements", "stations.csv")) %>%
+  select(site_code, county_name)
+
+gw_levels <- right_join(gw_measurements, stations, by = "site_code") %>%
+  mutate(gw_elevation = gwe,
+         msmt_date = format(as.POSIXct(msmt_date,
+                                      format='%Y/%m/%d %H:%M:%S'),
+                                      format='%Y/%m/%d')) %>% #dropping time from date data
+  mutate(date = ymd(msmt_date),   
+         year = lubridate::year(date))
+
+```
+
+## Water Use Data
+
+Finally, I've obtained water use data collected by the U.S Geological Survey (USGS)[^5]. This data set contains water withdrawal data by different demand sectors for years 1950-2015.
+
+[^5]: [U.S Geological Survey (USGS](https://water.usgs.gov/watuse/data/)
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Read in water use data 2000 - 2015
+#Read 2000 data, clean names, turn to numeric, filter NA in state,
+#and replace NA with 0
+d_wu_2000 <- read_xls(here(datadir, "water_use", "us2000.xls")) %>% 
+  clean_names() %>% 
+  filter(state != "NA") %>%
+  mutate(across(c(2:70), as.numeric)) %>%
+  replace(is.na(.), 0)
+#Read 2005 data, clean names, turn to numeric, filter NA in state,
+#and replace NA with 0
+d_wu_2005 <- read_xls(here(datadir,"water_use", "us2005.xls")) %>%
+  clean_names() %>%
+  filter(state != "NA") %>%
+  mutate(across(c(2:4), as.numeric)) %>%
+  mutate(across(c(6:108), as.numeric)) %>%
+  replace(is.na(.), 0)
+#Read 2010 data, clean names, turn to numeric, filter NA in state,
+#and replace NA with 0
+d_wu_2010 <- read_xlsx(here(datadir, "water_use", "us2010.xlsx")) %>%
+  clean_names() %>%
+  filter(state != "NA") %>%
+  mutate_at((2), as.numeric) %>%
+  mutate(across(c(4:117), as.numeric)) %>%
+  replace(is.na(.), 0)
+#Read 2015 data, clean names, turn to numeric, filter NA in state,
+#and replace NA with 0
+d_wu_2015 <- read_xlsx(here(datadir, "water_use", "us2015.xlsx"), skip = 1) %>%
+  clean_names() %>%
+  filter(state != "NA") %>%
+  mutate_at((2), as.numeric) %>%
+  mutate(across(c(4:141), as.numeric)) %>%
+  replace(is.na(.), 0)
+
+```
+
+## Data Scatter Plot
+
+To start off my analysis, I've combined all my water year data from multiple years into one single dataframe after I filter out years not needed for this analysis, since the focus is from the 1999-2019 time period. Afterwards, I found the monthly and yearly average for each month/year in the dataframe. Next, I combined my water year data with the reservoir data (filtered out for the San Luis Reservoir from 1999-2019). Lastly, I created a scatter plot to check for any correlation between San Luis Reservoir storage (Acre-feet) and average seasonal snowfall/rainfall (cm).
+
+As expected, there is a correlation between San Luis reservoir storage with average seasonal snowfall/rainfall.
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Wrangle water year data
+#Merge water year 2000-2003 data into one
+wy_2000_2003 <- list(wy_2000, wy_2001, wy_2002, wy_2003) %>%  
+  reduce(full_join)
+#Merge water year 2004-2019 data into one
+wy_2004_2019 <- list(wy_2004, wy_2005, wy_2006, wy_2007,
+                     wy_2008, wy_2009, wy_2010, wy_2011,
+                     wy_2012, wy_2013, wy_2014, wy_2015,
+                     wy_2016, wy_2017,wy_2018, wy_2019) %>%
+  reduce(full_join) %>%
+  mutate(date = lubridate::mdy(date))
+#Join both merged data frames together
+water_year <- full_join(wy_2000_2003, wy_2004_2019) %>%
+  rename(total_precip_mm = x24_hour_total_precip_mm,
+        date = date) %>%
+  mutate(avg_temp_c = (air_temp_max_c + air_temp_min_c)/2,
+         total_precip_cm = total_precip_mm/10)
+#Monthly average
+wy_monthly_avg <- water_year %>%
+  mutate(date = floor_date(water_year$date, "month")) %>%
+  select(date,
+         avg_temp_c,
+         new_snow_cm, 
+         snowpack_depth_cm,
+         season_total_snow_cm,
+         snow_water_equivalent_cm, 
+         percent_of_precip_as_snow,
+         total_precip_cm, 
+         season_total_precip_mm,
+         percent_of_precip_as_rain) %>%
+   group_by(date) %>%
+  summarise(date = mean(date),
+            avg_temp_c = round(mean(avg_temp_c), 2),
+            new_snow_cm = round(mean(new_snow_cm), 2),
+            snowpack_depth_cm = round(mean(snowpack_depth_cm), 2),
+            season_total_snow_cm = round(mean(season_total_snow_cm), 2),
+            snow_water_equivalent_cm = round(mean(snow_water_equivalent_cm), 2),
+            percent_of_precip_as_snow = round(mean(percent_of_precip_as_snow), 2),
+            total_rain_cm = round(sum((total_precip_cm), 2)),
+            season_total_precip_mm = round(mean(season_total_precip_mm), 2),
+            percent_of_precip_as_rain = round(mean(percent_of_precip_as_rain), 2))
+
+wy_monthly_total <-  water_year %>%
+  mutate(date = floor_date(water_year$date, "month")) %>%
+  select(date,
+         avg_temp_c,
+         new_snow_cm, 
+         snowpack_depth_cm,
+         season_total_snow_cm,
+         snow_water_equivalent_cm, 
+         percent_of_precip_as_snow,
+         total_precip_cm, 
+         season_total_precip_mm,
+         percent_of_precip_as_rain) %>%
+   group_by(date) %>%
+  summarise(date = mean(date),
+            avg_temp_c = round(mean(avg_temp_c), 2),
+            new_snow_cm = round(sum(new_snow_cm), 2),
+            snowpack_depth_cm = round(sum(snowpack_depth_cm), 2),
+            season_total_snow_cm = round(sum(season_total_snow_cm), 2),
+            snow_water_equivalent_cm = round(sum(snow_water_equivalent_cm), 2),
+            percent_of_precip_as_snow = round(mean(percent_of_precip_as_snow), 2),
+            total_rain_cm = round(sum((total_precip_cm), 2)),
+            season_total_precip_mm = round(mean(season_total_precip_mm), 2),
+            percent_of_precip_as_rain = round(mean(percent_of_precip_as_rain), 2))
+#Find cumulative precipitation and snow levels for each year
+wy_year_cumulative <- water_year %>%
+  mutate(year = floor_date(water_year$date, "year"),
+         year = lubridate::year(year)) %>%
+  group_by(year) %>%
+  select(year, 
+         new_snow_cm, 
+         season_total_snow_cm,
+         season_total_precip_mm,
+         snowpack_depth_cm,
+         total_precip_cm,
+         snow_water_equivalent_cm) %>%
+  summarise(year = mean(year),
+            new_snow_cm = round(sum(new_snow_cm), 2),
+            season_total_snow_cm = round(sum(season_total_snow_cm), 2),
+            season_total_precip_cm = round(sum((season_total_precip_mm/10), 2)),
+            snowpack_depth_cm = round(sum(snowpack_depth_cm), 2),
+            total_rain_cm = round(sum(total_precip_cm), 2),
+            snow_water_equivalent_cm = round(sum(snow_water_equivalent_cm), 2),
+            total_precipitation_cm = (season_total_precip_cm + season_total_snow_cm))
+
+water_year_avg <- water_year %>%
+  mutate(year = floor_date(water_year$date, "year"),
+         year = lubridate::year(year)) %>%
+  group_by(year) %>%
+  select(year, 
+         new_snow_cm, 
+         season_total_snow_cm,
+         season_total_precip_mm,
+         snowpack_depth_cm,
+         total_precip_cm,
+         snow_water_equivalent_cm) %>%
+  summarise(year = mean(year),
+            new_snow_cm = round(mean(new_snow_cm), 2),
+            season_total_snow_cm = round(sum(season_total_snow_cm), 2),
+            snowpack_depth_cm = mean(sum(snowpack_depth_cm), 2),
+            season_total_precip_cm = round(sum(total_precip_cm), 2),
+            snow_water_equivalent_cm = round(sum(snow_water_equivalent_cm), 2),
+            total_precip = (total_precip_cm + snow_water_equivalent_cm))
+```
+
+```{r}
+#wrangle reservoir data
+reservoir_avg <- reservoir_data %>%
+  group_by(year) %>%
+  summarise(elevation = round(mean(elevation, na.rm = TRUE), 2),
+            storage = round(mean(storage, na.rm = TRUE), 2),
+            ) %>% 
+  filter(!year < 1999 & !year > 2019 )
+
+```
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+
+##Merge water year average with reservoir level average
+wy_reservoir <- full_join(wy_year_cumulative, reservoir_avg) %>%
+  filter(!year >= 2020)
+```
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+snowpack_storage <- ggplot(data = wy_reservoir,
+       aes(x = season_total_snow_cm,
+           y = storage)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y~x,
+              se = TRUE,
+              size = 2,
+              col = "cadetblue4") +
+  labs(x = "Average Seasonal Snowfall (cm)",
+       y = "San Luis Reservoir Level (AF)") +
+  theme_classic()
+
+rainfall_storage <- ggplot(data = wy_reservoir,
+       aes(x = season_total_precip_cm,
+           y = storage)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y~x,
+              se = TRUE,
+              size = 2,
+              col = "cadetblue4") +
+  labs(x = "Average Seasonal Rainfall (cm)",
+       y = "San Luis Reservoir Level (AF)") +
+  theme_classic()
+
+gridExtra::grid.arrange(snowpack_storage, rainfall_storage)
+```
+
+## Analysis Plan
+
+To further dig deep into this analysis, I plan to run the following statistical test:
+
+1.  Time Series - This will help us observed how San Luis Reservoir storage levels, total precipitation (snow + rainfall) levels, and groundwater elevation have changed over time.
+2.  Linear Regression - With a single liner regression, we can determine how total precipitation levels influence reservoir levels or overall groundwater levels in California. Then we will check for P-value to determine if it is statistically significant. Additionally, we will check for R\^2 value to see how much total precipitation influences storage levels and groundwater levels.
+
+## Results
+
+### Time Series
+
+For this time series, I first had to find the average annual groundwater elevation for each year in our observation. Next, I merged average annual groundwater elevation to our water year and reservoir data to plot for this time series.
+
+The following time series shows a positive relationship between total precipitation (snow + rainfall) with storage levels in the San Luis Reservoir, which is expected. However, this time series shows that inverse relation between ground water elevation between total precipitation and storage levels from 2000-2019, which needs further investigation.
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Wranggling groundwater elevation data
+
+#Average monthly ground water levels
+gw_levels_monthly <- gw_levels %>%
+  mutate(date = floor_date(gw_levels$date, "month")) %>%
+  select(date, year, gw_elevation) %>%
+  filter(!year <= 1998 & !year > 2019) %>%
+  group_by(date) %>%
+  summarise(date = mean(date),
+            avg_gw_elevation = round(mean(gw_elevation, na.rm = TRUE), 2))
+
+gw_levels_monthly <- gw_levels_monthly[-c(1, 2, 3, 4, 5, 6, 7, 8, 9, 250, 251, 252), ]
+#Annual average gw levels
+gw_levels_year <- gw_levels %>%
+  mutate(date = floor_date(gw_levels$date, "year"), 
+         date = lubridate::year(date)) %>%
+  select(date, year, gw_elevation) %>%
+  filter(!year < 1999 & !year > 2019) %>%
+  group_by(date) %>%
+  summarise(year = mean(date),
+            avg_gw_elevation = round(mean(gw_elevation, na.rm = TRUE), 2))
+```
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Merge groundwater data with wy_reservoir data
+wy_reservoir <- left_join(wy_reservoir, gw_levels_year, by = "year") %>%
+  select(!year)
+#Merge
+merged_wy_gw <- left_join(wy_monthly_total, gw_levels_monthly, by = "date") %>% 
+  mutate(total_precip_cm = snow_water_equivalent_cm + total_rain_cm) 
+
+water_year_gw <- merged_wy_gw %>%
+  select(date, new_snow_cm, snowpack_depth_cm, total_rain_cm, avg_gw_elevation, total_precip_cm)
+```
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Plot time series 
+reservoir_ts <- reservoir_avg %>%
+  select(!year)
+
+wy_reservoir_ts <- wy_reservoir %>%
+  mutate(total_snow = season_total_snow_cm,
+         total_rainfall = season_total_precip_cm,
+         total_precip = total_snow + total_rainfall,
+         gw_elevation = avg_gw_elevation,
+         storage = storage) %>%
+  select(total_precip, storage, gw_elevation)
+
+plot(ts(data = wy_reservoir_ts, start = 1999, end = 2019),
+      main = "Hydrological Time Series") +
+  theme_classic()
+```
+
+## Single Linear Regression
+
+For the linear regression, I decided to focus on groundwater elevation and total precipitation. To run the following linear model, I use the lm() function in R to run the following regression.
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+lin_mod <- lm(gw_elevation ~ total_precip, data = wy_reservoir_ts)
+
+tab_model(lin_mod)
+
+summary(lm(gw_elevation ~ total_precip, data = wy_reservoir_ts)) %>%
+  tidy() 
+
+```
+
+Limitation Note: total_precip estimate is -0.000230, not shown in table produce by R.
+
+Interpretation: When total precipitation is 0, then total groundwater elevation is estimated to be 922.27 ft . For every additional centimeter of precipitation, there is a decrease of 0.000239 ft in groundwater elevation. Additionally, P-value for total precipitation tell us that the results are not statistically significant and R\^2 coefficient tell us that total precipitation does not influence groundwater elevation.
+
+We need to take a further look!
+
+## Further Analysis
+
+Given the results from the liner regression, I decided to take a further look into what is causing groundwater elevation to decrease when there is snow and rainfall.
+
+For a further analysis, I decided to take a look at total groundwater withdrawals utilizing the data obtained from the U.S Geological Survey.
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Wrangle CA water use data
+#Assign d_wu_year to wu_year
+#Create new columns (State, Public Supply, Irrigation, Rural, Industrial, Thermoelectric, and Year)
+#Pivot longer to create "Sectors" and "Withdrawals" column
+wu_2000 <- d_wu_2000 %>%
+  mutate(State = statefips,
+         "Public Supply" = ps_wgw_fr, 
+          Irrigation = it_wgw_fr,
+          Rural = do_wgw_fr + ls_wgw_fr,
+          Industrial = in_wgw_fr + mi_wgw_fr,
+          Thermoelectric = pt_wgw_fr,
+          Year = 2000) %>%
+  select(State, "Public Supply", Irrigation, Rural, Industrial, Thermoelectric, Year) %>%
+  group_by(State) %>%
+  summarize(across(1:5, sum)) %>%
+  mutate(Year = 2000) %>%
+  pivot_longer(2:6, names_to = "Sectors", values_to = "Withdrawals")
+#2005
+wu_2005 <- d_wu_2005 %>%
+  mutate(State = statefips,
+         "Public Supply" = ps_wgw_fr,
+         Irrigation = ir_wgw_fr,
+         Rural = do_wgw_fr + ls_wgw_fr,
+         Industrial = in_wgw_fr + mi_wgw_fr,
+         Thermoelectric = pt_wgw_fr,
+         Year = 2005) %>%
+  select(State, "Public Supply", Irrigation, Rural, Industrial, Thermoelectric, Year) %>%
+  group_by(State) %>%
+  summarize(across(1:5, sum)) %>%
+  mutate(Year = 2005) %>%
+  pivot_longer(2:6, names_to = "Sectors", values_to = "Withdrawals")
+#2010
+wu_2010 <- d_wu_2010 %>%
+  mutate(State = statefips,
+        "Public Supply" = ps_wgw_fr,
+        Irrigation = ir_wgw_fr,
+        Rural = do_wgw_fr + li_wgw_fr,
+        Industrial = in_wgw_fr + mi_wgw_fr,
+        Thermoelectric = pt_wgw_fr,
+        Year = 2010) %>%
+  select(State, "Public Supply", Irrigation, Rural, Industrial, Thermoelectric, Year) %>%
+  group_by(State) %>%
+  summarise(across(1:5, sum)) %>%
+  mutate(Year = 2010) %>%
+  pivot_longer(2:6, names_to = "Sectors", values_to = "Withdrawals")
+#2015
+wu_2015 <- d_wu_2015 %>%
+  mutate(State = statefips,
+        "Public Supply" = ps_wgw_fr,
+        Irrigation = ir_wgw_fr,
+        Rural = do_wgw_fr + li_wgw_fr,
+        Industrial = in_wgw_fr + mi_wgw_fr,
+        Thermoelectric = pt_wgw_fr,
+        Year = 2015) %>%
+  select(State, "Public Supply", Irrigation, Rural, Industrial, Thermoelectric, Year) %>%
+  group_by(State) %>%
+  summarise(across(1:5, sum)) %>%
+  mutate(Year = 2015) %>%
+  pivot_longer(2:6, names_to = "Sectors", values_to = "Withdrawals")
+```
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Combine 
+#Remove unnecessary FIPS
+wu_all <- rbind(wu_2000, wu_2005, wu_2010, wu_2015) %>%
+  filter(State != "78",
+         State != "72",
+         State != "69",
+         State != "66",
+         State != "60",
+         State != "0",
+         State != "11")
+#Create new object for sector water use for California
+ca_water_use <- wu_all %>%
+                 replace(is.na(.), 0) %>%
+                 filter(State == 6)
+
+#Create a new object for total freshwater withdrawals for California
+ca_wu_all <- ca_water_use %>%
+  select(-Sectors) %>%
+  replace(is.na(.), 0) %>%
+  group_by(Year) %>%
+  summarise(across(Withdrawals, sum))
+```
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Plot CA total groundwater withdrawals
+ggplot() +
+  geom_line(data = ca_wu_all, aes(x = Year, y = Withdrawals),
+            color = "black", size = 1) +
+#We need a point plot to help emphasize the data points for total withdrawals for each year
+  geom_point(data = ca_wu_all, aes(x = Year, y = Withdrawals),
+            color = "black", size = 2, fill = "black") +
+
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 5),
+                     limits = c(1999, 2017),
+                    expand = c(0,0)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10),
+                    limits = c(0, 20000),
+                    label = label_comma(),
+                    expand = c(0,0)) +
+  labs(x = "Year",
+       y = "Total GW Withdrawals (Mgal/day)",
+       caption = "Figure 1: GroundWater Withdrawals in CA 2000-2015.",
+       fill = "") +
+  theme_classic() +
+  theme(axis.text = element_text(color = "black", size = 8),
+        axis.text.y = element_text(color = "black", size = 8),
+        axis.text.x = element_text(color = "black", size = 8),
+        axis.title.y = element_text(color = "black", size = 10),
+        axis.title.x = element_text(color = "black", size = 10),
+        legend.position = "top",
+        plot.caption = element_text(hjust = 0, face = "bold", size = 10))
+```
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+#Plot time series 
+reservoir_ts <- reservoir_avg %>%
+  select(!year)
+
+wy_reservoir_ts <- wy_reservoir %>%
+  mutate(total_snow = season_total_snow_cm,
+         total_rainfall = season_total_precip_cm,
+         total_precip = total_snow + total_rainfall,
+         gw_elevation = avg_gw_elevation,
+         storage = storage) %>%
+  select(total_precip, storage, gw_elevation)
+
+plot(ts(data = wy_reservoir_ts, start = 1999, end = 2019),
+      main = "Hydrological Time Series") +
+  theme_classic()
+```
+
+Given the the plot of total groundwater withdrawals in California compared to out time series. It looks like there might be a connection between decreasing groundwater levels and increasing groundwater withdrawals, which makes sense since California highly depends on it groundwater supply for water.
+
+But now, my question is who is pumping all this groundwater?
+
+To take a further look, I sorted out groundwater withdrawals with demand sectors to plot it.
+
+```{r, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+##Create a plot for total withdrawals for each water use sector in California
+ggplot() +
+#The columns for sectors seem to be stack onto top of one another for each year
+  geom_col(data = ca_water_use, aes(x = Year, y = Withdrawals,
+           fill = reorder(Sectors, Withdrawals)),
+#To put the columns side by side, we use the position_doge and width argument
+           width = 4, position = position_dodge(3.5)) +
+           scale_fill_manual(values = c("darkturquoise", "orange2", "red3", "dodgerblue3", "green4")) +
+#We need a line a line plot to illustrate "Total Freshwater Withdrawals in California from 2000-2015"
+  geom_line(data = ca_wu_all, aes(x = Year, y = Withdrawals),
+            color = "darkgray", size = 1) +
+#We need a point plot to help emphasize the data points for total withdrawals for each year
+  geom_point(data = ca_wu_all, aes(x = Year, y = Withdrawals),
+            color = "darkgrey", size = 2, fill = "darkgrey") +
+  
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 14),
+                     limits = c(1999, 2017),
+                    expand = c(0,0)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10),
+                    limits = c(0, 20000),
+                    label = label_comma(),
+                    expand = c(0,0),
+                    sec.axis = sec_axis(trans = ~./1,
+                                breaks = breaks_pretty(n = 10),
+                                name = "Total Withdrawals in CA (Mgal/day)\n",
+                                labels = label_comma())) +
+                                labs(x = "Year",
+                                y = "Sector Withdrawals (Mgal/day)",
+                                caption = "Figure 1: GroundWater Withdrawals CA 2000-2015.",
+                                fill = "") +
+#It adds a border to the around the plot and removes the grid in the background
+  theme_few() +
+  theme(axis.text = element_text(color = "black", size = 8),
+        axis.text.y.right = element_text(color = "darkgrey", size = 8),
+        axis.text.y = element_text(color = "black", size = 8),
+        axis.text.x = element_text(color = "black", size = 8),
+        axis.title.y.right = element_text(color = "darkgrey", size = 10),
+        axis.title.y.left = element_text(color = "black", size = 10),
+        axis.title.x = element_text(color = "black", size = 10),
+        legend.position = "top",
+        plot.caption = element_text(hjust = 0, face = "bold", size = 10))
+
+```
+
+Given the results of the plot, it seems that the agriculture sector is withdrawing massive amounts of water as groundwater levels keep decreasing.
+
+## Future Research
+
+Given the limitations of the datasets, it will be interesting to look at recently collected data within the recent 10 years to see if these trends are stil continuing. Groundwater is specially important in the state of California, so further research will help how use improve water management and distribution.

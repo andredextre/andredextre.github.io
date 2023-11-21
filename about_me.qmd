@@ -1,23 +1,32 @@
 ---
-title: "Bio"
-
+title: "About Me"
 ---
 
+::: panel-tabset
 
-# Qué tal!
+## Background
 
-My name is Andre, I am a Master's student studying Environmental Data Science at the [Bren School of Environmental Science & Management](https://bren.ucsb.edu/masters-programs/master-environmental-data-science) at UC Santa Barbara. My passion is focused on **water resource management and policy**, and my goal is to use data science as a tool to contribute to the solution of the world's water crisis.
-
-------------------------------------------------------------------------
+<h4>Professional Bio</h4>
 
 ## Education
+<h4>Education</h4>
 
-**University of California, Santa Barbara**
+<u>**Bren School of Environmental Science & Management, UCSB**</u><br>
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` Masters in Environmental Data Science \| Graduated: June 2023 <br>
 
-<div class="topbr">
+<u>**University of California - Santa Barbara (UCSB)**</u><br>
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` BA Environmental Studies \| Graduated: June 2021
 
-<p class="custom-subtitle">
+<u>**Santa Monica College**</u><br>
+`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` AS Economics & Accounting \| Graduated: June 2018
 
-`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")`Masters in Environmental Data Science \| Expected Graduation: June 2023
+## Highlighted Projects
+<h4>Highlighted Projects</h4>
+<h10><b><u>Master's Environmental Data Science Capstone Project \| 2023 </b></u></h10><br> Title: [Assessing Wildfire in Groundwater Dependent Ecosystems](https://bren.ucsb.edu/projects/assessing-how-groundwater-availability-coincides-wildfire-risk)<br> Role: Project & Data Manager <br>
+Reproducible Code: [Analysis](https://github.com/gw-wildfire/aquafire), [Dashboard](https://github.com/gw-wildfire/shiny_app) 
+![](images/capstone_final.mp4){width="700"}
 
-`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")`Bachelor's of Arts in Environmental Studies \| June 2021
+<U>Description</U>: We developed a [ShinyApp Dashboard](https://shiny.rstudio.com) in R to show wildfire statistics and trends within [groundwater dependent ecosystems (GDEs)](https://www.fs.usda.gov/managing-land/natural-resources/geology/groundwater/groundwater-dependent-ecosystems) in California. The final product is a single operating platform where you can click on any groundwater dependent ecosystem in California and view wildfire statistics for that particular ecosystem. 
+
+:::
+

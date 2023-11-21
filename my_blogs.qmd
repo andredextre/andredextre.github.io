@@ -1,8 +1,8 @@
 ---
-title: "My Blogs"  
+title: "Gallery"  
 listing:  
   type: grid 
-  contents: posts 
+  contents: posts
   sort: "date desc"    
   categories: true
 ---

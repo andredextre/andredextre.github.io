@@ -2,7 +2,7 @@
 title: "Andre Dextre"
 subtitle: "Environmental Data Scientist   \n📍San Francisco Bay Area" 
 toc: false
-image: images/me3.jpg
+image: images/me2.jpg
 page-layout: full
 about:
    id: hero-heading

@@ -2,7 +2,7 @@
 title: "Andre Dextre"
 subtitle: "Environmental Data Scientist   \n📍San Francisco Bay Area" 
 toc: false
-image: images/me2.jpg
+image: images/Website_Pic.jpg
 page-layout: full
 about:
    id: hero-heading
@@ -31,40 +31,35 @@ format:
 ![](images/SF_GG_v2.png)
 
 ::: panel-tabset
-
 ## **Background**
 
 <h4>**Biography**</h4>
 
 Hello! I'm Andre, an Environmental Data Scientist with a deep-rooted passion for advancing sustainable water management. Born and raised in Lima, Peru, I experienced firsthand the challenges of water scarcity due to inadequate infrastructure and prolonged droughts. In 2006, at the age of eight, my family and I immigrated to the United States, a journey that shaped my worldview and my career path.
 
-The challenges I experienced with water scarcity while growing up in Lima ignited a profound dedication to addressing global water issues. This led me to earning my Master’s degree in Environmental Data Science from the Bren School of Environmental Science and Management at UC Santa Barbara. Throughout my academic journey, I've gained skills in water analysis, hydrological modeling, and scientific communication, equipping me with the tools to make a difference in the world of water policy and management.
+The challenges I experienced with water scarcity while growing up in Lima ignited a profound dedication to addressing global water issues. This led me to earning my Master's degree in Environmental Data Science from the Bren School of Environmental Science and Management at UC Santa Barbara. Throughout my academic journey, I've gained skills in water analysis, hydrological modeling, and scientific communication, equipping me with the tools to make a difference in the world of water policy and management.
 
 I am driven by the belief that effective water management is pivotal for community well-being and environmental sustainability. My goal is to leverage my academic background in water resources management and data science to inform and improve water policy, ensuring that communities worldwide have access to reliable and clean water.<br>
 
 ## **Education**
+
 <h4>**Education**</h4>
 
-<u>**Bren School of Environmental Science & Management, UCSB**</u><br>
-`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` Masters in Environmental Data Science \| Graduated: June 2023 <br>
+<u>**Bren School of Environmental Science & Management, UCSB**</u><br> `r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` Masters in Environmental Data Science \| Graduated: June 2023 <br>
 
-<u>**University of California - Santa Barbara (UCSB)**</u><br>
-`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` BA Environmental Studies \| Graduated: June 2021
+<u>**University of California - Santa Barbara (UCSB)**</u><br> `r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` BA Environmental Studies \| Graduated: June 2021
 
-<u>**Santa Monica College**</u><br>
-`r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` AS Economics & Accounting \| Graduated: June 2018
+<u>**Santa Monica College**</u><br> `r fontawesome::fa("graduation-cap", fill = "#4a76a8", a11y = "sem")` AS Economics & Accounting \| Graduated: June 2018
 
 ## **Highlighted Projects**
+
 <h4>**Highlighted Projects**</h4>
-<h10><b><u>Master's Environmental Data Science Capstone Project \| 2023 </b></u></h10><br> Title: [Assessing Wildfire in Groundwater Dependent Ecosystems](https://bren.ucsb.edu/projects/assessing-how-groundwater-availability-coincides-wildfire-risk)<br> Role: Project & Data Manager <br>
-Reproducible Code: [Analysis](https://github.com/gw-wildfire/aquafire), [Dashboard](https://github.com/gw-wildfire/shiny_app) 
-![](images/capstone_final.mp4){width="700"}
 
-<U>Description</U>: We developed a [ShinyApp Dashboard](https://shiny.rstudio.com) in R to show wildfire statistics and trends within [groundwater dependent ecosystems (GDEs)](https://www.fs.usda.gov/managing-land/natural-resources/geology/groundwater/groundwater-dependent-ecosystems) in California. The final product is a single operating platform where you can click on any groundwater dependent ecosystem in California and view wildfire statistics for that particular ecosystem. 
+<h10><b><u>Master's Environmental Data Science Capstone Project \| 2023 </b></u></h10><br> Title: [Assessing Wildfire in Groundwater Dependent Ecosystems](https://bren.ucsb.edu/projects/assessing-how-groundwater-availability-coincides-wildfire-risk)<br> Role: Project & Data Manager <br> Reproducible Code: [Analysis](https://github.com/gw-wildfire/aquafire), [Dashboard](https://github.com/gw-wildfire/shiny_app) ![](images/capstone_final.mp4){width="700"}
 
-<h10><b><u>Water Data Research Project \| 2021 </b></u></h10><br>Title: US Irrigation Methods & Water Withdrawals (Mgal/d)<br> Role: Student Researcher <br>
-Reproducible Code: [Analysis](https://github.com/andredextre/Water_Portfolio/blob/main/Water_Data_Portfolio.Rmd), [Interactive Map](https://github.com/andredextre/Water_Portfolio/blob/main/Water_Withdrawal_Map.Rmd) 
+<U>Description</U>: We developed a [ShinyApp Dashboard](https://shiny.rstudio.com) in R to show wildfire statistics and trends within [groundwater dependent ecosystems (GDEs)](https://www.fs.usda.gov/managing-land/natural-resources/geology/groundwater/groundwater-dependent-ecosystems) in California. The final product is a single operating platform where you can click on any groundwater dependent ecosystem in California and view wildfire statistics for that particular ecosystem.
 
+<h10><b><u>Water Data Research Project \| 2021 </b></u></h10><br>Title: US Irrigation Methods & Water Withdrawals (Mgal/d)<br> Role: Student Researcher <br> Reproducible Code: [Analysis](https://github.com/andredextre/Water_Portfolio/blob/main/Water_Data_Portfolio.Rmd), [Interactive Map](https://github.com/andredextre/Water_Portfolio/blob/main/Water_Withdrawal_Map.Rmd)
 
 ```{r, warning = FALSE, error = FALSE, echo = FALSE, message = FALSE, include = TRUE}
 #libraries
@@ -193,7 +188,4 @@ leaflet() %>%
 ```
 
 <U>Data Source</U>: [United States Geological Survey](https://water.usgs.gov/watuse/data/index.html) (2015)
-
-
 :::
-
